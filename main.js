@@ -52,28 +52,40 @@ form.addEventListener("submit", async (e) => {
     .send("service_glpg8gl", "template_c66aeqk", formObject)
     .then((response) => {
       if (response?.status === 200) {
-
-        if(window.location.pathname === "/" || window.location.pathname === "") {
-          window.location.pathname = "/thanks"
-        } else if(window.location.pathname.includes("index.html")){
-          window.location.pathname = window.location.pathname.replace("index.html", "thanks");
-        } else if(window.location.pathname.startsWith("/")) {
-          const pathArr = window.location.pathname.split('/').filter((el) => {
-            if(el === ""){
+        if (
+          window.location.pathname === "/" ||
+          window.location.pathname === ""
+        ) {
+          window.location.search = "";
+          window.location.hash = "";
+          window.location.pathname = "/thanks";
+        } else if (window.location.pathname.includes("index.html")) {
+          window.location.search = "";
+          window.location.hash = "";
+          window.location.pathname = window.location.pathname.replace(
+            "index.html",
+            "thanks"
+          );
+        } else if (window.location.pathname.startsWith("/")) {
+          const pathArr = window.location.pathname.split("/").filter((el) => {
+            if (el === "") {
               return false;
-            } else if(el === "/" ) {
-              return false
-            } else if(el.startsWith("#")) {
-              return false
-            } else if(el.startsWith("?")) {
-              return false
-            } else{
+            } else if (el === "/") {
+              return false;
+            } else if (el.startsWith("#")) {
+              return false;
+            } else if (el.startsWith("?")) {
+              return false;
+            } else {
               return true;
             }
           });
 
-          pathArr.unshift("")
-          pathArr.push("thanks")
+          pathArr.unshift("");
+          pathArr.push("thanks");
+
+          window.location.search = "";
+          window.location.hash = "";
           window.location.pathname = pathArr.join("/");
         }
       }
