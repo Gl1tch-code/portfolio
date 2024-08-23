@@ -45,17 +45,37 @@ form.addEventListener("submit", async (e) => {
     }
   });
 
-  document.querySelector('.form-submit-btn').style.display = "none";
-  document.querySelector('.form-loading-btn').style.display = "inline-block";
+  document.querySelector(".form-submit-btn").style.display = "none";
+  document.querySelector(".form-loading-btn").style.display = "inline-block";
 
   await emailjs
     .send("service_glpg8gl", "template_c66aeqk", formObject)
     .then((response) => {
       if (response?.status === 200) {
-        window.location.pathname =
-          window.location.pathname === "/" || window.location.pathname === ""
-            ? "/thanks"
-            : window.location.pathname.replace("/index.html", "/thanks");
+
+        if(window.location.pathname === "/" || window.location.pathname === "") {
+          window.location.pathname = "/thanks"
+        } else if(window.location.pathname.includes("index.html")){
+          window.location.pathname = window.location.pathname.replace("index.html", "thanks");
+        } else if(window.location.pathname.startsWith("/")) {
+          const pathArr = window.location.pathname.split('/').filter((el) => {
+            if(el === ""){
+              return false;
+            } else if(el === "/" ) {
+              return false
+            } else if(el.startsWith("#")) {
+              return false
+            } else if(el.startsWith("?")) {
+              return false
+            } else{
+              return true;
+            }
+          });
+
+          pathArr.unshift("")
+          pathArr.push("thanks")
+          window.location.pathname = pathArr.join("/");
+        }
       }
     });
 });
